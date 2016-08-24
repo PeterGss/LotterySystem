@@ -1,0 +1,250 @@
+package com.action2.work10;
+
+import java.security.PublicKey;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import Vehicle.interfaceDemo;
+
+public class LotterySystem {
+	static	HashMap <Integer,Login> users=new HashMap<Integer,Login>();
+	
+	//用户列表
+	public static int userCount=0;							//用户数量
+	static int user=0;										//
+	public static  ArrayList<lottery>lotteries=new ArrayList<lottery>();		//彩票列表
+	public static int lotCount=0;							//彩票数量
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("*******************欢迎购买35选7彩票系统********************");
+		
+		boolean exit=false;
+		while(exit==false){
+			System.out.println("请选择：1.用户注册2.用户登录3.彩票开奖0.退出系统");
+			Scanner sc= new Scanner(System.in);
+			
+			int op=sc.nextInt();
+			
+			switch(op){
+			case 1:
+				signUp();
+				break;
+			case 2:
+				signIn();
+				break;
+			case 3:
+				try{
+					lotteryDraw();
+				}catch (Exception e) {
+					
+				}
+				break;
+			case 0:
+				System.out.println("成功退出");
+				break;
+				default:
+					System.out.println("请重新选择");
+					exit=true;
+					break;
+			}
+			
+		}
+
+	}
+	public  static void signUp(){									//注册
+		System.out.println("欢迎注册:");
+		System.out.println("请输入您要注册的账号：");
+		
+		Scanner sc=new Scanner(System.in);
+		String rName=sc.next();
+		System.out.println("请输入您要注册的密码");
+		String sword=sc.next();
+		System.out.println("请输入您的姓名：");
+		String ame=sc.next();
+		System.out.println("请输入您的性别：");
+		boolean f;											//定义一个boolean类型的f
+		if(sc.next().equals("男"))							//男为true保存在sex中
+			f=true;
+		else {
+			f=false;
+		}
+		boolean ex=f;
+		System.out.println("请输入您的身份证号");
+		String regex1="^[1-9][0-9]{5}(19[0-9]{2}|200[0-9]|2010)(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[0-9]{3}[0-9xX]$";
+		String str1=new String();
+		if(match(regex1, str1)==true);
+		String dentity=sc.next();
+		System.out.println("请输入您的邮箱：");
+		String str=sc.next();
+		String regex = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+		if(match(regex, str)==true);
+		String mail=sc.next();
+		System.out.println("请输入您要注册的手机号：");
+		String honeNumber=sc.next();
+		System.out.println("请输入您的生日：yyyy-MM-dd");						//生日的正则表达式
+		
+	
+			
+		
+			String format=sc.next();							//定义格式
+		
+		
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date irthday = null;
+			try {   //异常
+				 irthday=sdf.parse(format);	 //赋值
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			System.out.println("注册成功");
+			users.put(userCount, new Login(rName, sword, ame, dentity, honeNumber, ex, irthday, mail));
+			userCount++;                                     	//用户数量+1
+		
+			
+			
+
+
+	}
+	private static boolean match(String regex, String str) {
+		// TODO Auto-generated method stub
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(str);
+		return matcher.matches();
+		
+	}
+	public  static void signIn(){
+		boolean flg=false;					//标记，查看是否需要继续登陆
+		System.out.println("现在 有几个账号"+userCount);
+		Scanner sc=new Scanner(System.in);
+		while(flg==false){
+		System.out.println("请输入账号：");
+		
+		String uStr=sc.next();
+		System.out.println("请输入密码：");
+		String pStr=sc.next();
+										
+		for(int i=0;i<=userCount;i++){
+			if(users.get(userCount).userName.equals(uStr) && users.get(userCount).password.equals(pStr))
+				{
+				System.out.println("登陆成功");
+				user=i;										//找到登陆的账号
+				flg=true;	
+				break;
+		}else												//如果有相应的账号密吧flag赋值为true 
+			{
+			System.out.println("账号密码错误，请重新输入"); 		//否则重新调用signIn方法
+
+			}
+		}
+		}
+		System.out.println("进入彩票购买系统");
+		boolean flag2=true;											//第二个标记
+		while(flag2==true){											//标记为true继续彩票购买系统
+		System.out.println("选择您想进入的功能：1.用户充值2.购买彩票0退出系统");
+		
+		
+		int op=sc.nextInt();
+		
+		switch(op){
+		case 1:
+			System.out.println("请输入充值的金额");
+			users.get(user).balance=users.get(user).balance+sc.nextInt();
+			break;
+		case 2:
+			System.out.println("请输入您要购买的彩票数字");
+			
+			lotteries.get(lotCount).account=users.get(user).userName;
+			System.out.println("账号"+lotteries.get(lotCount).account);
+			for (int i = 0; i < 7; i++) {
+				System.out.println("请输入您要购买的彩票数字"+i);
+				//lotteries[lotCount].num[i]=new num[7];
+				lotteries.get(lotCount).num[i]=sc.nextInt();    //往彩票列表中输入
+			}
+			System.out.println("购买成功");
+			users.get(user).balance-=2;
+			lotCount++;
+		
+			break;
+		case 0:
+			flag2=false;
+			break;
+		default:
+			System.out.println("指令错误，请重新输入");
+			break;
+		}
+		
+		
+	}
+	}
+	public static void lotteryDraw() throws Exception{
+		Random random=new Random();					//创建一个random对象，为nextInt的使用做铺垫
+		StringBuffer bf=new StringBuffer();
+		int[] b = new int[7];
+		 int i = 0;
+		 for (; i < b.length; i++) {
+		 b[i] = (int) (Math.random() * 35 + 1);
+		 for (int j = 0; j < i; j++) {
+		 if (b[i] == b[j]) {//是否含有重复数据
+		 b[i] = (int) (Math.random() * 35 + 1);//如果数据重复 重新随机一个
+		 j =0;//并且重新比较 是否有重复值
+		 }
+		 }
+		    bf.append(b[i]+" ");
+		}
+
+		int sm = 0;									//sm统计相同数字的个数
+		for(int x = 0;x<lotteries.size();x++){		//遍历lotterries数组
+		for(int y:lotteries.get(x).num){				//每个lotterries有7个元素的num数组
+			for(int j:b){							//遍历num与开奖号码比较
+				if(i==j)
+					sm++;
+			}
+		}
+		
+			System.out.println(user);
+		
+		System.out.println("sm"+sm);
+		System.out.println("x "+x);
+
+		switch(sm){									//颁奖
+		case 0:
+			users.get(user).balance+=5;
+			System.out.println("获得特别奖5元的有："+lotteries.get(x).account);
+			break;
+		case 4:
+			users.get(user).balance+=10;
+			System.out.println("获得四等奖40元的有："+lotteries.get(x).account);
+			break;
+		case 5:
+			users.get(user).balance+=1000;
+			System.out.println("获得三等奖1000元的有："+lotteries.get(x).account);
+			break;
+		case 6:
+			users.get(user).balance+=100000;
+			System.out.println("获得二等奖10w元的有："+lotteries.get(x).account);
+			break;
+		case 7:
+			users.get(user).balance+=5000000;
+			System.out.println("获得一等奖500w元的有："+lotteries.get(x).account);
+			break;
+		default:
+			System.out.println("很遗憾您没有获奖");
+			
+			break;
+			
+			
+		}
+		
+		}
+		users.clear();
+	}
+}

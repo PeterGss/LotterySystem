@@ -1,0 +1,55 @@
+package com.action2.work10;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Login {
+	public String userName;
+	public String password;
+	public String name;
+	public String identity;
+	public Login(String userName, String password, String name,
+			String identity, String phoneNumber, boolean sex, Date birthday,
+			String email) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.name = name;
+		this.identity = identity;
+		this.phoneNumber = phoneNumber;
+		this.sex = sex;
+		this.birthday = birthday;
+		this.email = email;
+		
+	}
+
+
+
+
+	public String phoneNumber;
+	public boolean sex;
+	public Date birthday;
+	public String email;
+	public double balance=100;				//余额
+	
+	
+	
+	public String toString() {
+		return "Login [userName=" + userName + ", password=" + password
+				+ ", name=" + name + ", identity=" + identity
+				+ ", phoneNumber=" + phoneNumber + ", sex=" + sex
+				+ ", birthday=" + birthday + ", email=" + email + ", balance="
+				+ balance + "]";
+	}
+
+
+
+	
+	public void signIn(){
+		
+	}
+}
+
+

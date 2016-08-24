@@ -1,0 +1,11 @@
+package com.action2.work10;
+
+import java.util.Date;
+
+import Vehicle.interfaceDemo;
+
+public class lottery {
+	String account;				//账号
+	int num[]=new int[7];		//购买号码
+	Date buyTime;				//购买时间
+}
